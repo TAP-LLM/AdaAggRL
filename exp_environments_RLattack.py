@@ -40,7 +40,7 @@ class FL_mnist(gym.Env):
         self.att_ids = list(np.sort(att_ids, axis=None))
         print('attacker ids: ', self.att_ids)
         self.trainset, self.testset = construct_dataloaders(args.dataset, data_path='./data')
-        # 数据集处理
+        
         cc = torch.cat([self.trainset[i][0].reshape(-1) for i in range(len(self.trainset))], dim=0)
         dm = (torch.mean(cc, dim=0).item(),)
         ds = (torch.std(cc, dim=0).item(),)
@@ -107,7 +107,7 @@ class FL_mnist(gym.Env):
     def step(self, action):
         args = self.args
         self.rnd += 1
-        # 更新reward
+       
         weights_lis = []
         print(self.cids)
         for cid in self.cids:
@@ -145,17 +145,17 @@ class FL_mnist(gym.Env):
         print('===================================================================================================')
         print('rnd = {}, loss = {}, accuracy = {}'.format(self.rnd, new_loss, new_acc))
         # **************************************************************************************************************
-        # 状态更新
+        
         # Clients' Operation
         old_weights = copy.deepcopy(self.aggregate_weights)
 
-        # weights_lis = []  # 用于存放合格的客户端权重，用于加权平均
+        # weights_lis = []  
         # random.seed(self.rnd)
         self.cids = random.sample(range(args.num_clients), int(args.num_clients * args.subsample_rate))
         while len(common(self.cids, self.att_ids)) >= 4:
             self.cids = random.sample(range(args.num_clients), int(args.num_clients * args.subsample_rate))
 
-        weights_dict = {}  # 选中的客户端的序号及其对应的权重
+        weights_dict = {} 
         steps = 1
         # if self.rnd >= 10:
         non_att = exclude(self.cids, self.att_ids)
@@ -222,7 +222,7 @@ class FL_mnist(gym.Env):
             # server computes gradient
             weight_cid = weights_dict[cid]
             input_gradient = [torch.from_numpy((w2 - w1) / (args.lr * steps)).to(**setup) for w1, w2 in
-                              zip(weight_cid, old_weights)]  # 做过修改
+                              zip(weight_cid, old_weights)] 
             input_gradient = [grad.detach() for grad in input_gradient]
 
             # server learns the distribution
@@ -234,20 +234,18 @@ class FL_mnist(gym.Env):
                                                 num_images=args.dummy_batch_size)  # args.dummy_batch_size)
             output, stats, recovered_labels = rec_machine.reconstruct(input_gradient, None,
                                                                       img_shape=self.image_shape)  # dummy_batch,
-            # 去噪。没啥用，算了
-            # output = autoencoder(output)
-            # 提取图片特征用于计算MMD
-            feature = self.extract_feature(output).view(args.dummy_batch_size, 128).detach()  # 保证前后两次feature是同一个net的结果
+           
+            feature = self.extract_feature(output).view(args.dummy_batch_size, 128).detach()  
             self.client_state[cid]['current_feature'] = (copy.deepcopy(feature),stats['opt'])
             global_feature += feature
         global_feature = global_feature / len(self.cids)
         # set_parameters(self.net, old_weights)
-        # _, server_accuracy = test(self.net, serverloader)  # 用于和client的accuracy做对比
+        # _, server_accuracy = test(self.net, serverloader)  
         # print('the standard accuracy = {}'.format(server_accuracy))
         for cid in self.cids:
             self.client_state[cid]['global_feature'] = copy.deepcopy(global_feature)
 
-            # server计算客户端前后两次恢复数据集的分布差异
+            
             if self.client_state[cid]['times'] == 0:
                 sim_lc = 0.9
                 sim_lg = 0.9
@@ -330,8 +328,8 @@ class FL_mnist(gym.Env):
         # Clients' Operation
         old_weights = copy.deepcopy(self.aggregate_weights)
 
-        # weights_lis = []  # 用于存放合格的客户端权重，用于加权平均
-        weights_dict = {}  # 选中的客户端的序号及其对应的权重
+       
+        weights_dict = {}  
 
         for cid in self.cids:
             set_parameters(self.net, old_weights)
@@ -346,7 +344,7 @@ class FL_mnist(gym.Env):
             global_feature = 0
             weight_cid = weights_dict[cid]
             input_gradient = [torch.from_numpy((w2 - w1) / (args.lr * steps)).to(**setup) for w1, w2 in
-                              zip(weight_cid, old_weights)]  # 做过修改
+                              zip(weight_cid, old_weights)]  
             input_gradient = [grad.detach() for grad in input_gradient]
 
             # server learns the distribution
@@ -359,7 +357,7 @@ class FL_mnist(gym.Env):
             output, stats, recovered_labels = rec_machine.reconstruct(input_gradient, None,
                                                                       img_shape=self.image_shape)  # dummy_batch,
             feature = self.extract_feature(output).view(args.dummy_batch_size,
-                                                        128).detach()  # 保证前后两次feature是同一个net的结果
+                                                        128).detach()  
             self.client_state[cid]['current_feature'] = (copy.deepcopy(feature), stats['opt'])
             global_feature += feature
         global_feature = global_feature / len(self.cids)
