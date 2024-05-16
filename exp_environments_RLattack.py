@@ -45,10 +45,10 @@ class FL_mnist(gym.Env):
         dm = (torch.mean(cc, dim=0).item(),)
         ds = (torch.std(cc, dim=0).item(),)
 
-        train_groups = _build_groups_by_q(self.trainset, args.q)  # 10个
+        train_groups = _build_groups_by_q(self.trainset, args.q)
         test_groups = _build_groups_by_q(self.testset, args.q)
         trainloaders, testloaders = [], []
-        num_group_clients = int(args.num_clients / args.num_class)  # 10个
+        num_group_clients = int(args.num_clients / args.num_class)
         for gid in range(args.num_class):
             num_traindata = int(len(train_groups[gid]) / num_group_clients)
             num_testdata = int(len(test_groups[gid]) / num_group_clients)
