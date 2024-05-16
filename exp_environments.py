@@ -287,10 +287,10 @@ class FL_mnist(gym.Env):
         #random.seed(150)
         if args.dataset == 'CIFAR10':
             model = torchvision.models.resnet18(num_classes=10)#, pretrained=True)
-            # model = ResNet18_cifar(class_num=10)
-            # model.conv1 = nn.Conv2d(model.conv1.in_channels,model.conv1.out_channels,3,1,1)
-            # model.maxpool = nn.Identity()
-            # model.fc = nn.Linear(model.fc.in_features,10)
+            model = ResNet18_cifar(class_num=10)
+            model.conv1 = nn.Conv2d(model.conv1.in_channels,model.conv1.out_channels,3,1,1)
+            model.maxpool = nn.Identity()
+            model.fc = nn.Linear(model.fc.in_features,10)
             self.net = model
         else:
             self.net = MNISTClassifier()
