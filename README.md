@@ -13,6 +13,8 @@ Please run the following command to install required packages
 ```
 # requirements
 pip install -r requirements.txt
+```
+
 ## References
 Our inverting gradients implementation is modified from https://github.com/JonasGeiping/invertinggradients
 
