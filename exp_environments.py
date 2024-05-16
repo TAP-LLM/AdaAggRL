@@ -9,7 +9,7 @@ from attack_utilities import *
 import gym
 from gym import spaces
 from gym.utils import seeding
-from inversefed.data.data_processing import construct_dataloaders
+from data.data_processing import construct_dataloaders
 from utilities import _build_groups_by_q
 from torch.utils.tensorboard import SummaryWriter
 import time
