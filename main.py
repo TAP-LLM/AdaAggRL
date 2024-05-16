@@ -19,9 +19,9 @@ def get_args():
     parser.add_argument('--fl_epoch', type=int, default=500)
     parser.add_argument('--lr', type=float, default=0.05)
     parser.add_argument('--dataset', type=str, default='CIFAR10',
-                        help='dataset used for training (MNIST,CIFAR10,ImageNet)')
+                        help='dataset used for training (MNIST,CIFAR10...)')
     parser.add_argument('--dummy_batch_size', type=int, default=16)
-    parser.add_argument('--attack', type=str, default='LMP')
+    parser.add_argument('--attack', type=str, default='LMP',help='type of attack (IPM,LMP,EB)')
 
     args = parser.parse_args()
     return args
