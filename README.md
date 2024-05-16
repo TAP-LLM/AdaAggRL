@@ -14,7 +14,8 @@ Please run the following command to install required packages
 # requirements
 pip install -r requirements.txt
 ```
-
+## Train
+After downloading the data set and setting the parameters as required in ```main.py```, you can run the ```main.py``` file for FL training. Note: In actual run time, debug may be required to adapt to the current device and environment
 ## References
 Our inverting gradients implementation is modified from https://github.com/JonasGeiping/invertinggradients
 
