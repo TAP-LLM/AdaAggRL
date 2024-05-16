@@ -42,7 +42,7 @@ class FL_mnist(gym.Env):
         self.att_ids = list(np.sort(att_ids, axis=None))
         print('attacker ids: ', self.att_ids)
         self.trainset, self.testset = construct_dataloaders(args.dataset, data_path='./data')
-        # 数据集处理
+        
         cc = torch.cat([self.trainset[i][0].reshape(-1) for i in range(len(self.trainset))], dim=0)
         dm = (torch.mean(cc, dim=0).item(),)
         ds = (torch.std(cc, dim=0).item(),)
@@ -205,7 +205,7 @@ class FL_mnist(gym.Env):
             # server computes gradient
             weight_cid = weights_dict[cid]
             input_gradient = [torch.from_numpy((w2 - w1) / (args.lr * steps)).to(**setup) for w1, w2 in
-                              zip(weight_cid, old_weights)]  # 做过修改
+                              zip(weight_cid, old_weights)]
             input_gradient = [grad.detach() for grad in input_gradient]
 
             # server learns the distribution
