@@ -26,7 +26,6 @@ def total_variation(x):
     return dx + dy
 
 
-# 模型设置参数
 DEFAULT_CONFIG = dict(signed=False,
                       boxed=True,
                       cost_fn='sim',
