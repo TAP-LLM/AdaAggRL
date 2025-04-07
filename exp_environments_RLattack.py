@@ -34,7 +34,7 @@ class FL_mnist(gym.Env):
         low = 0
         self.observation_space = spaces.Box(low=low, high=high, shape=(int(args.num_clients * args.subsample_rate), 4))# self.seed()
         # self.lr = 0.01
-        # ***********************************************************************************
+        
         random.seed(150)
         att_ids = random.sample(range(args.num_clients), args.num_attacker)
         self.att_ids = list(np.sort(att_ids, axis=None))
@@ -98,7 +98,7 @@ class FL_mnist(gym.Env):
         self.extract_feature.eval()
         self.tensorboard = SummaryWriter("mnist_RL_attack_loss_acc/")
         self.history = {'loss':[],'acc':[]}
-        # ***********************************************************************************
+       
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -109,7 +109,7 @@ class FL_mnist(gym.Env):
         self.rnd += 1
        
         weights_lis = []
-        print(self.cids)
+        
         for cid in self.cids:
             weights_lis.append(self.weights_dict[cid])
         #k = []
@@ -130,21 +130,18 @@ class FL_mnist(gym.Env):
             else:
                 k[i] = k[i] * (0.2 ** self.client_state[self.cids[i]]['flag'])
                 self.client_state[self.cids[i]]['flag'] = max(0, self.client_state[self.cids[i]]['flag']-1)
-        print(k)
         new_weight = aggeregate(weights_lis, k.numpy().tolist())
         self.aggregate_weights = copy.deepcopy(new_weight)
         set_parameters(self.net, self.aggregate_weights)
         new_loss, new_acc = test(self.net, self.testloader)
         reward = self.loss - new_loss
-        print('self.loss = {}, new_loss = {}, reward = {}'.format(self.loss, new_loss, reward))
+    
         self.loss = copy.deepcopy(new_loss)
         self.history['loss'].append(new_loss)
         self.history['acc'].append(new_acc)
         self.tensorboard.add_scalar("loss", self.loss, self.rnd)
         self.tensorboard.add_scalar("accuracy", new_acc, self.rnd)
-        print('===================================================================================================')
-        print('rnd = {}, loss = {}, accuracy = {}'.format(self.rnd, new_loss, new_acc))
-        # **************************************************************************************************************
+        
         
         # Clients' Operation
         old_weights = copy.deepcopy(self.aggregate_weights)
@@ -177,7 +174,7 @@ class FL_mnist(gym.Env):
                     new_weight = get_parameters(self.net)
                     # weights_lis.append(new_weight)
                     weights_dict[cid] = copy.deepcopy(new_weight)
-            print(real_att)
+            
             if len(real_att)>0:
                 set_parameters(self.net, old_weights)
                 if args.attack == 'IPM':
@@ -189,7 +186,7 @@ class FL_mnist(gym.Env):
                     attack_dict = EB_attack(self.net, old_weights, self.cids, real_att, self.trainloaders,
                                            self.testloaders)
                 elif args.attack == 'RL_attack':
-                    print("----------RL Attack--------------")
+                   
                     last_layer = np.concatenate(
                         [self.aggregate_weights[-2].flatten(), self.aggregate_weights[-1]]).reshape(1,
                                                                                                     self.weights_dimension)
@@ -259,7 +256,7 @@ class FL_mnist(gym.Env):
                                                   self.client_state[cid]['current_feature'][0].cpu())
                 sim_lg = maximum_mean_discrepancy(self.client_state[cid]['local_feature'][0].cpu(), global_feature.cpu())
                 sim_cg = maximum_mean_discrepancy(self.client_state[cid]['current_feature'][0].cpu(), global_feature.cpu())
-                print('similarity of client {} is lc={} lg={} cg={}'.format(cid, sim_lc, sim_lg, sim_cg))
+                # print('similarity of client {} is lc={} lg={} cg={}'.format(cid, sim_lc, sim_lg, sim_cg))
                 # set_parameters(self.net, weight_cid)
                 # _, accuracy = test(self.net, serverloader)
                 # print('accuracy = {}'.format(accuracy))
@@ -287,25 +284,25 @@ class FL_mnist(gym.Env):
         if self.rnd >= 1000:
             done = True  # 15, 25, 75
             _, acc = test(self.net, self.testloader)
-            print(self.rnd, new_loss, acc)
+            
 
         self.old_state = new_state
         self.weights_dict = weights_dict
         if reward < -10:
             done = False
-            print('action = {}'.format(action))
+            
             #pram = self.reset()
             #return self.old_state, reward, False, {}
         if reward < -1000:
             done = True
-            print('action = {}'.format(action))
+          
             #pram = self.reset()
             return self.old_state, reward, done, {}
 
 
         return new_state, reward, done, {}
 
-        # ****************************************************************************************************************
+        
 
     def reset(self):
         args = self.args
@@ -324,7 +321,7 @@ class FL_mnist(gym.Env):
         self.history['acc'].append(self.acc)
         self.tensorboard.add_scalar("loss", self.loss, self.rnd)
         self.tensorboard.add_scalar("accuracy", self.acc, self.rnd)
-        print('rnd = 0, loss = {}, accuracy = {}'.format(self.loss, self.acc))
+      
         # Clients' Operation
         old_weights = copy.deepcopy(self.aggregate_weights)
 
