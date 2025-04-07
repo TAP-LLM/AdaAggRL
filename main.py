@@ -41,5 +41,5 @@ model = TD3("MlpPolicy", env, buffer_size=1000,
 print('start training.......')
 model.learn(total_timesteps=500, log_interval=1, callback = checkpoint_callback)
 history = env.history
-torch.save(torch.tensor(history['loss']), 'result/cifar10/loss_0.1_lmp_20.pth')
-torch.save(torch.tensor(history['acc']), 'result/cifar10/accuracy_0.1_lmp_20.pth')
+# torch.save(torch.tensor(history['loss']), '...')
+# torch.save(torch.tensor(history['acc']), '...')
