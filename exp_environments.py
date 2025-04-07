@@ -268,7 +268,7 @@ class FL_mnist(gym.Env):
             done = False
             print('action = {}'.format(action))
 
-        if reward < -1000:
+        if reward < -80:
             done = True
             print('action = {}'.format(action))
 
