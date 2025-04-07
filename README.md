@@ -20,3 +20,15 @@ After downloading the data set and setting the parameters as required in ```main
 Our inverting gradients implementation is modified from https://github.com/JonasGeiping/invertinggradients
 
 Our RL-attack implementation is modified from https://github.com/SliencerX/Learning-to-Attack-Federated-Learning
+
+## Cite Format
+
+    @misc{wang2024defendingsophisticatedpoisoningattacks,
+          title={Defending Against Sophisticated Poisoning Attacks with RL-based Aggregation in Federated Learning}, 
+          author={Yujing Wang and Hainan Zhang and Sijia Wen and Wangjie Qiu and Binghui Guo},
+          year={2024},
+          eprint={2406.14217},
+          archivePrefix={arXiv},
+          primaryClass={cs.LG},
+          url={https://arxiv.org/abs/2406.14217}, 
+        }
