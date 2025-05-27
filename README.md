@@ -1,5 +1,5 @@
 # AdaAggRL
-source code for the paper 'Defending Against Sophisticated Poisoning Attacks with RL-based Aggregation in Federated Learning'
+source code for the paper '[Defending Against Sophisticated Poisoning Attacks with RL-based Aggregation in Federated Learning](https://ojs.aaai.org/index.php/AAAI/article/view/34733)'
 ## Code Structure
 ```utilities.py``` contains all helper functions and defense algorithms including median, clipping median, krum and FLtrust.\
 ```exp_environments.py``` contains the environment used for training defense policy.\
@@ -23,12 +23,12 @@ Our RL-attack implementation is modified from https://github.com/SliencerX/Learn
 
 ## Cite Format
 
-    @misc{wang2024defendingsophisticatedpoisoningattacks,
-          title={Defending Against Sophisticated Poisoning Attacks with RL-based Aggregation in Federated Learning}, 
-          author={Yujing Wang and Hainan Zhang and Sijia Wen and Wangjie Qiu and Binghui Guo},
-          year={2024},
-          eprint={2406.14217},
-          archivePrefix={arXiv},
-          primaryClass={cs.LG},
-          url={https://arxiv.org/abs/2406.14217}, 
-        }
+    @inproceedings{wang2025defending,
+      title={Defending Against Sophisticated Poisoning Attacks with RL-based Aggregation in Federated Learning},
+      author={Wang, Yujing and Zhang, Hainan and Wen, Sijia and Qiu, Wangjie and Guo, Binghui},
+      booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+      volume={39},
+      number={24},
+      pages={25443--25451},
+      year={2025}
+    }
